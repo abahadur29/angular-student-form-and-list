@@ -1,0 +1,59 @@
+<div class="form-container">
+  <h2>Add New Student</h2>
+  
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label>Full Name <span class="required">*</span></label>
+      <input type="text" formControlName="name" placeholder="Enter full name" 
+             [class.error-border]="f['name'].invalid && f['name'].touched">
+      
+      <div *ngIf="f['name'].invalid && f['name'].touched" class="error-msg">
+        <small *ngIf="f['name'].errors?.['required']">Name is required.</small>
+        <small *ngIf="f['name'].errors?.['minlength']">Name must be at least 5 characters.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Class <span class="required">*</span></label>
+      <select formControlName="class">
+        <option value="">Select Class</option>
+        <option *ngFor="let c of classes" [value]="c">{{ c }}</option>
+      </select>
+      
+      <div *ngIf="getClassMessage()" class="info-msg">
+        💡 {{ getClassMessage() }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Gender <span class="required">*</span></label>
+      <div class="radio-group">
+        <label><input type="radio" formControlName="gender" value="Male"> Male</label>
+        <label><input type="radio" formControlName="gender" value="Female"> Female</label>
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <label>
+        <input type="checkbox" formControlName="hasHobby"> 
+        I have a hobby
+      </label>
+    </div>
+
+    <div class="form-group" *ngIf="studentForm.get('hasHobby')?.value">
+      <label>Hobby Name</label>
+      <input type="text" formControlName="hobby" placeholder="e.g. Painting, Cricket">
+    </div>
+
+    <div class="form-group">
+      <label>Favorite Subject</label>
+      <select formControlName="favouriteSubject">
+        <option value="">Select Subject</option>
+        <option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</option>
+      </select>
+    </div>
+
+    <button type="submit" [disabled]="studentForm.invalid" class="btn-save">Save Student</button>
+  </form>
+</div>
